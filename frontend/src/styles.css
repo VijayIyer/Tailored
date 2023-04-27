@@ -1,0 +1,15 @@
+.flex {
+  display: flex;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+.sections {
+  padding: 2em;
+  margin: 2em;
+  border: 1px solid green;
+  color: green;
+}
