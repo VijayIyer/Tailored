@@ -1,0 +1,10 @@
+.section {
+	margin-bottom:1em;
+}
+.section__placeholder {
+	border:1px solid;
+}
+.section__placeholder:hover{
+	border:2px solid black;
+	font-weight:bold;
+}

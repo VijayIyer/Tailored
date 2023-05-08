@@ -1,0 +1,7 @@
+.item__placeholder {
+	border:1px solid;
+}
+.item__placeholder:hover{
+	border:2px solid black;
+	font-weight:bold;
+}

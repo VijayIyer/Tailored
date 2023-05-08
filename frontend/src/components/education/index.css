@@ -1,0 +1,7 @@
+.education__addbtn {
+	border:1px solid black;
+}
+.education__addbtn:hover {
+	border:2px solid black;
+	font-weight: bold;
+}

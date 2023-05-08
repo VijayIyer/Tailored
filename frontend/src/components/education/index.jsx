@@ -1,35 +1,22 @@
-import { Container, Form, Button, FloatingLabel } from "react-bootstrap";
+import { Container, Row, Form, Button, FloatingLabel } from "react-bootstrap";
+import { useState } from 'react';
+import NewEducation from './newEducation';
+import './index.css';
 const Education = () => {
+  const [education, setEducation] = useState(0)
+  const addEducation = () =>{
+    console.log(`adding new education!`);
+    setEducation(education => education + 1);
+  }
   return (
-    <Container className='d-flex flex-column gap-5'>
-      <h1>Add Education Details</h1>
-      <Form className='d-flex p-5 flex-column gap-2 border border-dark'>
-        <div>
-          <label>Institution Name:</label>
-          <input type='text' />
-        </div>
-        <div className='d-flex gap-2'>
-          <div>
-            <label>From:</label>
-            <input type='date' />
-          </div>
-          <div>
-            <label>To:</label>
-            <input type='date' />
-          </div>
-        </div>
-        <div>
-          <FloatingLabel controlId='floatingTextarea2' label='Summary'>
-            <Form.Control
-              as='textarea'
-              placeholder='Leave a comment here'
-              style={{ height: "100px" }}
-            />
-          </FloatingLabel>
-        </div>
-        <Button variant='outline-dark'>Save</Button>
-      </Form>
-      <Button variant='outline-dark'>+ Add Education</Button>
+    <Container>
+      <Row><h3>Education</h3></Row>
+      {[...Array(education)].map(education =>{
+        return <Row><NewEducation /></Row>
+      })}
+      <Row>
+        <div role="button" onClick={addEducation} className="education__addbtn">+ Add Education</div>
+      </Row>
     </Container>
   );
 };

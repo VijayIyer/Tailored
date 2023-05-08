@@ -1,35 +1,20 @@
-import { Button, Container, Form, FloatingLabel } from 'react-bootstrap';
+import { useState } from 'react';
+import { Button, Container, Row, Form, FloatingLabel } from 'react-bootstrap';
+import './index.css';
+import NewProject from './newProject'
 const Projects = () => {
-  return <Container className='d-flex flex-column gap-2'>
-      <h1>Add Projects</h1>
-      <Form className='d-flex p-5 flex-column gap-2 border border-dark'>
-        <div>
-          <label>Project Name:</label>
-          <input type='text' />
-        </div>
-        <div className='d-flex gap-2'>
-          <div>
-            <label>From:</label>
-            <input type='date' />
-          </div>
-          <div>
-            <label>To:</label>
-            <input type='date' />
-          </div>
-        </div>
-        <div>
-          <FloatingLabel controlId='floatingTextarea2' label='Summary'>
-            <Form.Control
-              as='textarea'
-              placeholder='Leave a comment here'
-              style={{ height: "100px" }}
-            />
-          </FloatingLabel>
-        </div>
-        <Button variant='outline-dark'>Save</Button>
-      </Form>
-      <Button variant='outline-dark'>+ Add Project</Button>
+  const [projects, setProjects] = useState(0);
+  const addProject = () =>{
+    setProjects(project => project + 1);
+  }
+  return (
+    <Container>
+      <Row><h3>Projects</h3></Row>
+      {[...Array(projects)].map(experience =>{
+        return <Row><NewProject /></Row>
+      })}
+      <Row><div onClick={addProject} className="item__placeholder" role="button">+ Add Project</div></Row>
     </Container>
-;
+    )
 };
 export default Projects;

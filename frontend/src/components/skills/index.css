@@ -1,0 +1,7 @@
+.skills__save{
+	border:1px solid;
+}
+.skills__save:hover{
+	border:2px solid black;
+	font-weight:bold;
+}

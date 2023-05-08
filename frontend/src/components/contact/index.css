@@ -1,0 +1,7 @@
+.contact__savebtn{
+	border:1px solid black;
+}
+.contact__savebtn:hover{
+	border:2px solid black;
+	font-weight:bold;
+}
