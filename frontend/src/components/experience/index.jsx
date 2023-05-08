@@ -1,4 +1,39 @@
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
+import "bootstrap/dist/css/bootstrap.min.css";
 const Experience = () => {
-  return <h1>Add Experience</h1>;
+  return (
+    <Container className='d-flex flex-column gap-5'>
+      <Form className='d-flex p-5 flex-column gap-2 border border-dark'>
+        <div>
+          <label>Company Name:</label>
+          <input type='text' />
+        </div>
+        <div className='d-flex gap-2'>
+          <div>
+            <label>From:</label>
+            <input type='date' />
+          </div>
+          <div>
+            <label>To:</label>
+            <input type='date' />
+          </div>
+        </div>
+        <div>
+          <FloatingLabel controlId='floatingTextarea2' label='Summary'>
+            <Form.Control
+              as='textarea'
+              placeholder='Leave a comment here'
+              style={{ height: "100px" }}
+            />
+          </FloatingLabel>
+        </div>
+        <Button variant='outline-dark'>Save</Button>
+      </Form>
+      <Button variant='outline-dark'>+ Add Experience</Button>
+    </Container>
+  );
 };
 export default Experience;
