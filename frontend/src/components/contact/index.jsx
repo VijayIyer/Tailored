@@ -1,42 +1,65 @@
-import { Container, Button, Form, Row, Col } from "react-bootstrap";
-import './index.css';
+import { Container, Form, Row, Col, InputGroup, Button, Accordion } from "react-bootstrap";
+import { GoLocation } from 'react-icons/go';
+import { AiTwotonePhone, AiOutlineMail } from 'react-icons/ai';
+import { FaSave } from 'react-icons/fa';
+import { BsFillPersonFill } from 'react-icons/bs';
+import Field from '../utils/field';
+import "./index.css";
 const Contact = () => {
+  const onSaveClick = (e) =>{
+    e.preventDefault();
+
+  }
   return (
     <>
+      <Accordion className="text-center" alwaysOpen flush>
+
+      <Accordion.Header><h4>Contact</h4></Accordion.Header>
+      <Accordion.Body>
       <Form>
-      <Container className="text-center">
-        <Row><h3>Contact Info</h3></Row>
-        <Row>
-          <Col>
-              <Form.Group className='mb-3'>
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type='email' placeholder='Enter email' />
-              </Form.Group>
+        <Container className='text-center'>
+          <Row>
+            <Col>
+              <Field placeholder="Enter Name"><BsFillPersonFill /></Field> 
+            </Col>
+            </Row>
+          <Row>
+            <Col>
+              <Field placeholder="Enter Email Address"><AiOutlineMail /></Field> 
             </Col>
             <Col>
-              <Form.Group className='mb-3'>
-                <Form.Label>Name</Form.Label>
-                <Form.Control type='email' placeholder='Enter name' />
-              </Form.Group>
-            </Col>
+              <Field placeholder="Enter Phone No.">
+                <AiTwotonePhone />
+              </Field>
+              </Col>
+
+            </Row>
+            
+            <Row>
             <Col>
-              <Form.Group className='mb-3'>
-                <Form.Label>Phone</Form.Label>
-                <Form.Control type='email' placeholder='Enter phone' />
-              </Form.Group>
+              <Field placeholder='Location'><GoLocation /></Field>
+              
             </Col>
-        </Row>
-        <Row>
-          <div
-                onClick={(e) => e.preventDefault()}
-                role="button"
-                className="contact__savebtn"
-              >
-                Save
-              </div>
-        </Row>
-      </Container>
+          </Row>
+          <Row>
+          
+            <Col>
+            <Button
+              
+              onClick={onSaveClick}
+              variant='outline-dark'
+            className="flex justify-content-flex-start"
+            // style={{display: 'flex', justifyContent: 'flex-start'}}
+            >
+              <FaSave />
+            </Button>
+            </Col>
+          </Row>
+        </Container>
       </Form>
+      </Accordion.Body>
+      
+      </Accordion>
     </>
   );
 };

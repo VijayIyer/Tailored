@@ -9,10 +9,10 @@ const Education = () => {
     setEducation(education => education + 1);
   }
   return (
-    <Container>
+    <Container className="text-center">
       <Row><h3>Education</h3></Row>
-      {[...Array(education)].map(education =>{
-        return <Row><NewEducation /></Row>
+      {[...Array(education)].map((education, index) =>{
+        return <Row><NewEducation headerArgument={`Education #${index}`} /></Row>
       })}
       <Row>
         <div role="button" onClick={addEducation} className="education__addbtn">+ Add Education</div>

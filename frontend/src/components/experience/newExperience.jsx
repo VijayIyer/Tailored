@@ -1,47 +1,88 @@
-import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
-import { Tooltip } from "bootstrap"
+import { Container, Row, Col, Form, InputGroup, Button, Accordion } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import { FaSave } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
-// import CompanyNamesInput from './companyNamesInput';
-export default function NewExperience(){
+import { MdDeleteForever, MdDone } from 'react-icons/md';
+import { FiEdit2 } from 'react-icons/fi';
+import Field from '../utils/field';
+export default function NewEducation({ headerArgument }){
+	const [header, setHeader] = useState(null);
+	const [editMode, setEditMode] = useState(false);
+	useEffect(()=>{
+		console.log(headerArgument);
+		setHeader(headerArgument);
+	}, [])
+	const onEducationTitleChange = (e) =>{
+		setHeader(e.target.value);
+	}
 	return (
-		<Form className="border p-2 mb-3">
+		<Accordion alwaysOpen>
+		<Accordion.Header>
+			<Form.Group>
+				<InputGroup onClick={(e)=>e.stopPropagation()}>
+					{editMode? <Form.Control value={header} onChange={onEducationTitleChange} /> : 
+					<Form.Text className="m-3">{header}</Form.Text>}
+					<InputGroup.Text onClick={(e)=>{
+						
+						setEditMode(mode=>!mode);
+					}}>
+						{editMode ? <MdDone />:<FiEdit2 />}
+					</InputGroup.Text>
+				</InputGroup>
+			</Form.Group>
+		</Accordion.Header>
+		<Accordion.Body>
+		<Form className="border p-3">
 	        <Container fluid>
-	        	<Row className="m-1">
-	        		<Col xs={10} md={10}>
-	        			<label className="p-2">Company Name:</label>
-	          		<input className="p-2" type='text' />
-	        		</Col>
-	        		<Col className="d-flex gap-2 ml-auto">
-	        			<div role="button" className="p-1"><FaSave /></div>
-	        			<div role="button" className="p-1"><MdDeleteForever /></div>
-	        		</Col>
+	        	<Row>
+	        		
+	        			<Col>
+	        				<Field placeholder="Enter College/Institution Name">
+	        				
+	        				</Field>
+	        			</Col>
+	        		
 	        	</Row>
-	        	<Row className="m-1">
-	        		<Col md={4} xs={4}>
-	        			<label className="p-2">Job Title:</label>
-	          		<input className="p-2" type='text' />
+	        	<Row>
+	        		<Col md={6} xs={6}>
+	        			<Field placeholder="Enter Degree"></Field>
+	        		</Col>
+	        		<Col md={6} xs={6}>
+	        			<Field placeholder="Enter Major"></Field>
+	        		</Col>
+	        		</Row>
+	        		<Row>
+	        		<Col>
+	        			<Form.Group>
+	        				<InputGroup>
+										<InputGroup.Text>From:</InputGroup.Text>
+	        					<Form.Control type="date"></Form.Control>
+	        				</InputGroup>
+	        				
+	        				
+	        			</Form.Group>
 	        		</Col>
 	        		<Col>
-	        			<label className="m-2">From:</label>
-	            	<input className="m-2" type='date' />
+	        			<Form.Group>
+	        				<InputGroup>
+										<InputGroup.Text>To:</InputGroup.Text>
+	        					<Form.Control type="date"></Form.Control>
+	        				</InputGroup>
+	        				
+	        				
+	        			</Form.Group>
 	        		</Col>
-	        		<Col>
-	        			<label className="m-2">To:</label>
-	            	<input className="m-2" type='date' />
-	        		</Col>
+	        		
 	        	</Row>
-	        	<Row className="m-1">
-	        		<div>
-	          <FloatingLabel controlId='floatingTextarea2' label='Summary'>
-	            <Form.Control
-	              as='textarea'
-	              placeholder='Leave a comment here'
-	              style={{ height: "100px" }}
-	            />
-	          </FloatingLabel>
-	        	</div>
+	        	<Row>
+	        		<Col>
+	        			<Button className="flex justify-content-flex-start mt-3" variant="outline-dark">
+	        				<FaSave />
+	        			</Button>
+	        		</Col>
 	        	</Row>
 	        </Container>
-    </Form>)
+	      </Form>
+	      </Accordion.Body>
+	      </Accordion>
+      )
 }
