@@ -1,42 +1,116 @@
-import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
-import { Tooltip } from "bootstrap"
+import { Container, Row, Col, Form, InputGroup, Button, Accordion, FloatingLabel } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { FaSave } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
-export default function NewExperience(){
+import { MdDeleteForever, MdDone } from 'react-icons/md';
+import { FiEdit2 } from 'react-icons/fi';
+import Field from '../utils/field';
+export default function NewProject({ 
+	id,
+	modifyLabel,
+	modifyTitle,
+	modifySummary,
+	modifyStartDate,
+ 	modifyEndDate, 
+	removeItem,
+	headerArgument
+	}) {
+	const [header, setHeader] = useState(null);
+	const [editMode, setEditMode] = useState(false);
+	const [title, setTitle] = useState(null);
+	useEffect(()=>{
+		console.log(headerArgument);
+		setHeader(headerArgument);
+	}, [])
+	
 	return (
-		<Form className="border p-2 mb-3">
+		<Accordion alwaysOpen>
+		<Accordion.Header>
+			<Form.Group>
+				<InputGroup onClick={(e)=>e.stopPropagation()}>
+					{editMode? <Form.Control value={header} onChange={(e)=>setHeader(e.target.value)} /> : 
+					<Form.Text className="m-3">{header}</Form.Text>}
+					<InputGroup.Text onClick={(e)=>{
+						
+						setEditMode(mode=>!mode);
+					}}>
+						{editMode ? <MdDone onClick={()=>modifyLabel(id, header)}/>:<FiEdit2 />}
+					</InputGroup.Text>
+				</InputGroup>
+			</Form.Group>
+		</Accordion.Header>
+		<Accordion.Body>
+		<Form className="border p-3">
 	        <Container fluid>
-	        	<Row className="m-1">
-	        		<Col xs={10} md={10}>
-	        			<label className="p-2">Project Name:</label>
-	          		<input className="p-2" type='text' />
-	        		</Col>
-	        		<Col className="d-flex gap-2 ml-auto">
-	        			<div role="button" className="p-1"><FaSave /></div>
-	        			<div role="button" className="p-1"><MdDeleteForever /></div>
-	        		</Col>
+	        	<Row>
+	        		
+	        			<Col>
+	        				<Field placeholder="Enter Project Name"
+	        				id={id}
+	        				value={title}
+	        				modify={modifyTitle} >
+	        				</Field>
+	        			</Col>
+	        		
 	        	</Row>
-	        	<Row className="m-1">
+	        	
+	        		<Row>
 	        		<Col>
-	        			<label className="m-2">From:</label>
-	            	<input className="m-2" type='date' />
+	        			<Form.Group>
+	        				<InputGroup>
+										<InputGroup.Text>From:</InputGroup.Text>
+	        					<Form.Control 
+											onChange={(e)=>modifyStartDate(id, e.target.value)}
+	        						type="date">
+	        					</Form.Control>
+	        				</InputGroup>
+	        			</Form.Group>
 	        		</Col>
 	        		<Col>
-	        			<label className="m-2">To:</label>
-	            	<input className="m-2" type='date' />
+	        			<Form.Group>
+	        				<InputGroup>
+										<InputGroup.Text>To:</InputGroup.Text>
+	        					<Form.Control 
+											onChange={(e)=>modifyEndDate(id, e.target.value)}
+		        					type="date"
+		        					>
+	              		</Form.Control>
+	        				</InputGroup>
+	        			</Form.Group>
 	        		</Col>
+	        		
 	        	</Row>
-	        	<Row className="m-1">
-	        		<div>
-	          <FloatingLabel controlId='floatingTextarea2' label='Summary'>
+	        	<Row>
+	        	 <Col>
+	        	 <FloatingLabel className="mt-3" controlId='floatingTextarea2' label='Summary'>
 	            <Form.Control
 	              as='textarea'
 	              placeholder='Leave a comment here'
 	              style={{ height: "100px" }}
+	              onChange={(e)=>{ 
+		              		console.log(e.target.value);
+		              		modifySummary(id, e.target.value);
+	              			}}
 	            />
 	          </FloatingLabel>
-	        	</div>
+	          </Col>
 	        	</Row>
+	        	<Row>
+	        		<Col>
+	        			<Button className="flex justify-content-flex-start mt-3" variant="outline-dark">
+	        				<FaSave />
+	        			</Button>
+	        		</Col>
+	        		<Col>
+	        		<Button onClick={()=>removeItem(id)} className="flex justify-content-flex-start mt-3" variant="outline-dark">
+	        			<AiOutlineDelete />
+	        		</Button>
+	        		</Col>
+	        	</Row>
+	        	
 	        </Container>
-    </Form>)
+	      </Form>
+	      </Accordion.Body>
+	      </Accordion>
+      )
 }

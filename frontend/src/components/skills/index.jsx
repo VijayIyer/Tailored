@@ -11,7 +11,7 @@ const Skills = () => {
   const [tags, setTags] = useState([]);
   const [savedSkills, setSavedSkills] = useState([]);
   const addSkills = () =>{
-    setSavedSkills(state);
+    console.log(`saving skills to server`);
   }
    const handleAddition = (tag) => {
     console.log(tag);

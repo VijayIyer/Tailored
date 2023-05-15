@@ -3,19 +3,92 @@ import { useState } from 'react';
 import NewEducation from './newEducation';
 import './index.css';
 const Education = () => {
-  const [education, setEducation] = useState(0)
-  const addEducation = () =>{
-    console.log(`adding new education!`);
-    setEducation(education => education + 1);
+  const [items, setItems] = useState([]);
+
+  const addItem = () =>{
+    let newItem = {
+      id: items.length,
+      label:`Education # ${items.length}`,
+      institution:null, 
+      major:null,
+      startDate:null,
+      endDate:null, 
+      degreeName:null,
+    };
+    setItems([...items, newItem]);
   }
+  const removeItem = (id) =>{
+    let newItems = items.filter(item => item.id !== id);
+    setItems(newItems);
+  }
+  const modifyItemLabel = (id, label)=>{
+    console.log(`field changed:${label}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).label = label;
+    }
+    setItems(newItems);
+  };
+  const modifyInstitution = (id, institution)=>{
+    console.log(`field changed:${institution}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).institution = institution;
+    }
+    setItems(newItems);
+  };
+  const modifyDegree = (id, degreeName)=>{
+    console.log(`field changed:${degreeName}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).degreeName = degreeName;
+    }
+    setItems(newItems);
+  };
+  const modifyMajor = (id, major)=>{
+    console.log(`field changed:${major}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).major = major;
+    }
+    setItems(newItems);
+  };
+  const modifyStartDate = (id, startDate)=>{
+    console.log(`field changed:${startDate}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).startDate = startDate;
+    }
+    setItems(newItems);
+  };
+  const modifyEndDate = (id, endDate)=>{
+    console.log(`field changed:${endDate}`);
+    let newItems = [...items];
+    if(newItems.find(item=>item.id===id)){
+      newItems.find(item=>item.id===id).endDate = endDate;
+    }
+    setItems(newItems);
+  };
   return (
     <Container className="text-center">
       <Row><h3>Education</h3></Row>
-      {[...Array(education)].map((education, index) =>{
-        return <Row><NewEducation headerArgument={`Education #${index}`} /></Row>
+      {items.map((item, index) =>{
+        return (
+          <Row>
+            <NewEducation id={item.id} key={item.id} 
+              removeItem={()=>removeItem(item.id)}
+              headerArgument={item.label}
+              modifyItemLabel={modifyItemLabel} 
+              modifyMajor={modifyMajor}
+              modifyInstitution={modifyInstitution}
+              modifyDegree={modifyDegree}
+              modifyStartDate={modifyStartDate}
+              modifyEndDate={modifyEndDate}
+              />
+        </Row>)
       })}
       <Row>
-        <div role="button" onClick={addEducation} className="education__addbtn">+ Add Education</div>
+        <div role="button" onClick={addItem} className="education__addbtn">+ Add Education</div>
       </Row>
     </Container>
   );

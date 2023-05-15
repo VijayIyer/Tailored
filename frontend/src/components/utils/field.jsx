@@ -2,14 +2,15 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FiEdit2 } from 'react-icons/fi';
 import { MdDone } from 'react-icons/md';
-export default function Field({ placeholder, children }){
+export default function Field({ id, value, modify, placeholder, children }){
 	const [editMode, setEditMode] = useState(false);
+	const [fieldValue, setFieldValue] = useState(null);
 	const toggleEditMode = ()=>{
 		setEditMode(editMode=> !editMode);
 	}
 	useEffect(()=>{
-		console.log(editMode);
-	}, [editMode])
+		setFieldValue(value);
+	}, []);
 	return (
 						<Form.Group className="mb-3">
               <InputGroup >
@@ -21,8 +22,18 @@ export default function Field({ placeholder, children }){
 	                ) :
                 (<></>)
               	}
-                <Form.Control disabled={!editMode} placeholder={placeholder} />
-                <Button onClick={toggleEditMode} variant='outline-secondary'>{editMode? <MdDone /> : <FiEdit2 /> }</Button>
+                <Form.Control value={fieldValue} onChange={(e)=>setFieldValue(e.target.value)} disabled={!editMode} placeholder={placeholder} />
+                <Button 
+                onClick={()=>{
+                	toggleEditMode();
+                	if(editMode) modify(id, fieldValue);
+                	}
+                } 
+                variant='outline-secondary'>
+	                {editMode? <MdDone /> 
+	                : <FiEdit2 />
+	              	}
+              	</Button>
               </InputGroup>
              </Form.Group>
               )
