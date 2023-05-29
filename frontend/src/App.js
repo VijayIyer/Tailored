@@ -12,7 +12,7 @@ function LandingPageButton({ buttonText, navigateTo, callbackFn}){
       <Col onClick={async ()=>{
         let profileId = await callbackFn();
         console.log(profileId);
-        navigate(`${navigateTo}/${profileId}`);
+        navigate(`${navigateTo}/${profileId}`, {state:{profileId:profileId}});
       }} onMouseOver={()=>setHover(true)} onMouseLeave={()=>setHover(false)} className='landingPage__btn m-5' role='button'>
             
               <h1>{buttonText}</h1>
