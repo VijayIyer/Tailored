@@ -8,3 +8,10 @@
 	border:2px solid black;
 	font-weight:bold;
 }
+
+.landingPage__btn {
+	border:1px solid gray;
+}
+.landingPage__btn:hover{
+	border:3px solid black;
+}
