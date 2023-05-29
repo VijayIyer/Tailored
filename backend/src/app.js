@@ -16,6 +16,7 @@ app.use(morgan('dev'))
 app.use('/api/v1/user', require('./routes/user.routes'))
 app.use('/api/v1/auth', require('./routes/auth.routes'))
 app.use('/api/v1/profile', require('./routes/profile.routes'));
+app.use('/api/v1/contact', require('./routes/contact.routes'));
 app.get('/', (req,res)=>{
   res.status(200).json({msg: `Resume Builder Application! Use endpoints in format 'api/v1/* for queries'`})
 })
