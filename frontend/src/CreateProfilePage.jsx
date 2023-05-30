@@ -47,7 +47,7 @@ function App() {
             <Container fluid>
               <Row
                 className='section'
-                onClick={() => replaceSection("contact")}
+                
               >
                 <Col className='p-1'>
                   {contactReplaced ? (
@@ -56,6 +56,7 @@ function App() {
                     <div
                       role='button'
                       className='section__placeholder p-3 text-center'
+                      onClick={() => replaceSection("contact")}
                     >
                       + Add Contact Section
                     </div>
@@ -64,7 +65,7 @@ function App() {
               </Row>
               <Row
                 className='section'
-                onClick={() => replaceSection("education")}
+                
               >
                 <Col className='p-1 text-center'>
                   {educationReplaced ? (
@@ -73,13 +74,14 @@ function App() {
                     <div
                       role='button'
                       className='section__placeholder p-3 text-center'
+                      onClick={() => replaceSection("education")}
                     >
                       + Add Education Section
                     </div>
                   )}
                 </Col>
               </Row>
-              <Row className='section' onClick={() => replaceSection("skill")}>
+              <Row className='section'>
                 {skillReplaced ? (
                   <Col className='p-1 text-center'>
                     <Skills />
@@ -89,6 +91,7 @@ function App() {
                     <div
                       role='button'
                       className='section__placeholder p-3 text-center'
+                      onClick={() => replaceSection("skill")}
                     >
                       + Add Skill Section
                     </div>
@@ -97,7 +100,7 @@ function App() {
               </Row>
               <Row
                 className='section'
-                onClick={() => replaceSection("experience")}
+                
               >
                 {experienceReplaced ? (
                   <Col className='p-1 text-center'>
@@ -108,6 +111,7 @@ function App() {
                     <div
                       role='button'
                       className='section__placeholder p-3 text-center'
+                      onClick={() => replaceSection("experience")}
                     >
                       + Add Experience Section
                     </div>
@@ -116,7 +120,7 @@ function App() {
               </Row>
               <Row
                 className='section'
-                onClick={() => replaceSection("project")}
+                
               >
                 {projectReplaced ? (
                   <Col className='p-1 text-center'>
@@ -127,6 +131,7 @@ function App() {
                     <div
                       role='button'
                       className='section__placeholder p-3 text-center'
+                      onClick={() => replaceSection("project")}
                     >
                       + Add Projects Section
                     </div>

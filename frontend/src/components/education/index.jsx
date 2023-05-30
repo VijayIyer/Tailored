@@ -1,25 +1,59 @@
 import { Container, Row, Form, Button, FloatingLabel } from "react-bootstrap";
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import NewEducation from './newEducation';
 import './index.css';
 const Education = () => {
+  const location = useLocation();
+  const profileId = location.state.profileId;
   const [items, setItems] = useState([]);
-
   const addItem = () =>{
-    let newItem = {
-      id: items.length,
-      label:`Education # ${items.length}`,
-      institution:null, 
-      major:null,
-      startDate:null,
-      endDate:null, 
-      degreeName:null,
-    };
-    setItems([...items, newItem]);
+    let newItem;
+    fetch('http://localhost:5000/api/v1/education', {
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify({
+        profileId:profileId
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      newItem = {
+        id: data.id,
+        label:`Education # ${items.length}`,
+        institution:null, 
+        major:null,
+        startDate:null,
+        endDate:null, 
+        degreeName:null,
+      };
+      setItems([...items, newItem]);  
+    })
+    .catch(err=>console.error(err))
   }
   const removeItem = (id) =>{
-    let newItems = items.filter(item => item.id !== id);
-    setItems(newItems);
+    fetch(`http://localhost:5000/api/v1/education/${id}`, {
+      method:'DELETE',
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      let newItems = items.filter(item => item.id !== id);
+      setItems(newItems);  
+    })
+    .catch(err=>console.error(err))
+  }
+  const getItems = ()=>{
+    fetch('http://localhost:5000/api/v1/education', {
+      method:'GET',
+      headers:{
+        'content-type':'application/json'
+      }
+    })
   }
   const modifyItemLabel = (id, label)=>{
     console.log(`field changed:${label}`);
@@ -77,7 +111,12 @@ const Education = () => {
           <Row>
             <NewEducation id={item.id} key={item.id} 
               removeItem={()=>removeItem(item.id)}
-              headerArgument={item.label}
+              major={item.major}
+              degreeName={item.degreeName}
+              institution={item.institution}
+              startDate={item.startDate}
+              endDate={item.endDate}
+              label={item.label}
               modifyItemLabel={modifyItemLabel} 
               modifyMajor={modifyMajor}
               modifyInstitution={modifyInstitution}

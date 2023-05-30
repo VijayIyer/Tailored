@@ -8,7 +8,12 @@ import Field from '../utils/field';
 export default function NewEducation({ 
 	id, 
 	removeItem, 
-	headerArgument, 
+	label,
+	institution, 
+	major, 
+	startDate, 
+	endDate, 
+	degreeName, 
 	modifyItemLabel, 
 	modifyDegree, 
 	modifyMajor, 
@@ -17,28 +22,51 @@ export default function NewEducation({
 	modifyEndDate }){
 	const [header, setHeader] = useState(null);
 	const [editMode, setEditMode] = useState(false);
-	const [institution, setInstitution] = useState(null); 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null); 
-  const [degreeName, setDegreeName] = useState(null);
-  const [major, setMajor] = useState(null)
+	// const [institution, setInstitution] = useState(null); 
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null); 
+  // const [degreeName, setDegreeName] = useState(null);
+  // const [major, setMajor] = useState(null)
+	const saveEducation = ()=>{
+		fetch(`http://localhost:5000/api/v1/education/${id}`, {
+			method:'POST',
+			body:JSON.stringify({
+				institution, 
+				startDate, 
+				endDate, 
+				degreeName, 
+				major,
+				label
+			}),
+			headers:{
+				'content-type':'application/json'
+			}
+		})
+		.then(res=>res.json())
+		.then(data=>console.log(data))
+		.catch(err=>console.error(err))
+	}
 	useEffect(()=>{
-		console.log(headerArgument);
-		setHeader(headerArgument);
-	}, [])
-	
+		setHeader(label);
+	}, [label])
 	return (
 		<Accordion alwaysOpen>
 		<Accordion.Header>
 			<Form.Group>
 				<InputGroup onClick={(e)=>e.stopPropagation()}>
-					{editMode? <Form.Control value={header} onChange={(e)=>setHeader(e.target.value)} /> : 
-					<Form.Text className="m-3">{header}</Form.Text>}
+					{
+						editMode? 
+						<Form.Control 
+						value={header}
+						onChange={(e)=>setHeader(e.target.value)} /> : 
+						<Form.Text className="m-3">{header}</Form.Text>
+					}
 					<InputGroup.Text onClick={(e)=>{
-						
 						setEditMode(mode=>!mode);
 					}}>
-						{editMode ? <MdDone onClick={()=>modifyItemLabel(id, header)} />:<FiEdit2 />}
+						{editMode ? 
+						<MdDone onClick={()=>modifyItemLabel(id, header)} />:
+						<FiEdit2 />}
 					</InputGroup.Text>
 				</InputGroup>
 			</Form.Group>
@@ -92,7 +120,7 @@ export default function NewEducation({
 	        	</Row>
 	        	<Row>
 	        		<Col>
-	        			<Button className="flex justify-content-flex-start mt-3" variant="outline-dark">
+	        			<Button className="flex justify-content-flex-start mt-3" variant="outline-dark" onClick={saveEducation}>
 	        				<FaSave />
 	        			</Button>
 	        		</Col>
