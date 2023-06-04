@@ -50,15 +50,28 @@ const Contact = () => {
   }, [id])
   const createContactInfo = async () =>{
     try{
-      let result = await fetch('http://localhost:5000/api/v1/contact', {
-        method:'POST',
-        "headers":{
-          "content-type":"application/json"
-        },
-        body:JSON.stringify({
-          "profileId": locationHook.state.profileId
-        })
-      });
+      let result;
+      let profileId = locationHook.state.profileId;
+      if(!profileId){
+          result = await fetch('http://localhost:5000/api/v1/contact', {
+            method:'POST',
+            "headers":{
+              "content-type":"application/json"
+            },
+            body:JSON.stringify({
+              "profileId": locationHook.state.profileId
+            })
+          });
+        }
+      else{
+         result = await fetch(`http://localhost:5000/api/v1/contact/${profileId}`, {
+            method:'GET',
+            headers:{
+              "content-type":"application/json"
+            }
+            
+          }); 
+      }
       let data = await result.json();
       setId(data.id);
     }
