@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,11 +11,52 @@ import Education from "./components/education";
 import Contact from "./components/contact";
 import "./styles.css";
 function App() {
+  const location = useLocation();
+  const profileId = location.state.profileId;
   const [experienceReplaced, setExperienceReplaced] = useState(false);
   const [projectReplaced, setProjectReplaced] = useState(false);
   const [skillReplaced, setSkillReplaced] = useState(false);
   const [educationReplaced, setEducationReplaced] = useState(false);
   const [contactReplaced, setContactReplaced] = useState(false);
+  useEffect(()=>{
+    fetch('http://localhost:5000/api/v1/contact/:profileId', {
+      method:'GET',
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.contact.length > 0) setContactReplaced(true);
+    })
+    .catch(err=>console.error(err))
+  }, [])
+  useEffect(()=>{
+    fetch('http://localhost:5000/api/v1/experience/:profileId', {
+      method:'GET',
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.experience.length > 0) setExperienceReplaced(true);
+    })
+    .catch(err=>console.error(err))
+  }, [])
+  useEffect(()=>{
+    fetch('http://localhost:5000/api/v1/education/:profileId', {
+      method:'GET',
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.education.length > 0) setEducationReplaced(true);
+    })
+    .catch(err=>console.error(err))
+  }, [])
   const replaceSection = (sectionName) => {
     switch (sectionName) {
       case "experience":
