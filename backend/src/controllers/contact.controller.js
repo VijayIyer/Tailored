@@ -2,12 +2,14 @@ const Contact = require("../models/Contact");
 const CTRL = {};
 
 CTRL.get = (req, res) => {
-  res.send(`getting contact with id ${req.params.id} for profile ${req.params.id}`);
+	const profileId = req.params.profileId;
+	Contact.findOne({profileId:profileId})
+	.then(contact=>res.status(200).json({ok:true, id:contact._id}))
+	.catch(err=>res.status(500).json({ok:false, err}))
 };
 
 
 CTRL.create = (req, res)=>{
-	console.log(`creating new contact`);
 	Contact.create({profileId:req.body.profileId})
 	.then((newContact)=>{
 		res.status(201).json({
