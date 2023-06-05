@@ -4,7 +4,7 @@ const CTRL = {};
 CTRL.get = (req, res) => {
 	const profileId = req.params.profileId;
 	Contact.findOne({profileId:profileId})
-	.then(contact=>res.status(200).json({ok:true, id:contact._id}))
+	.then(contact=>res.status(200).json({ok:true, contact}))
 	.catch(err=>res.status(500).json({ok:false, err}))
 };
 
@@ -14,7 +14,7 @@ CTRL.create = (req, res)=>{
 	.then((newContact)=>{
 		res.status(201).json({
 			ok:true, 
-			id:newContact.id
+			newContact
 		})
 	})
 	.catch(err =>{
@@ -30,10 +30,11 @@ CTRL.update = (req, res)=>{
 	Contact.findOne({_id:req.params.id})
 	.then(contact=>{
 		console.log(contact);
-		contact.name=req.body.name;
-		contact.phone = req.body.phone;
-		contact.location = req.body.location;
-		contact.email = req.body.email;
+		if (req.body.name) contact.name=req.body.name;
+		if (req.body.phone) contact.phone = req.body.phone;
+		if (req.body.location) contact.location = req.body.location;
+		if (req.body.email) contact.email = req.body.email;
+		contact.save();
 		return contact;
 	})
 	.then((updatedContact)=>{
