@@ -21,6 +21,7 @@ function CreateProfilePage() {
   const [contactData, setContactData] = useState(null);
   const [educationData, setEducationData] = useState([]);
   const [skillData, setSkillData] = useState([]);
+  const [experienceData, setExperienceData] = useState([]);
   useEffect(() => {
       fetch(`http://localhost:5000/api/v1/contact/${profileId}`, {
         method: "GET",
@@ -58,19 +59,25 @@ function CreateProfilePage() {
     })
     .catch(err=>console.error(err))
   }, []);
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.experience.length > 0) setExperienceReplaced(true);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => {
+        if(res.ok) return res.json();
+        throw new Error(`error retrieving experience records for profile with id ${profileId}`);
+      })
+      .then((data) => {
+         { 
+          setExperienceReplaced(true);
+          setExperienceData(data.experience);
+       }
+      })
+      .catch((err) => console.error(err));
+  }, []);
   useEffect(() => {
     fetch(`http://localhost:5000/api/v1/education/${profileId}`, {
       method: "GET",
@@ -170,7 +177,7 @@ function CreateProfilePage() {
               <Row className='section'>
                 {experienceReplaced ? (
                   <Col className='p-1 text-center'>
-                    <Experience />
+                    <Experience data={experienceData}/>
                   </Col>
                 ) : (
                   <Col className='p-1'>
