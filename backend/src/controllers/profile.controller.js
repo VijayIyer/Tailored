@@ -6,7 +6,7 @@ CTRL.get = (req, res) => {
 		const id = req.params.id;
   	console.log(`getting profile with id - ${id}`);
   	Profile.findById({_id:id})
-  	.then(profiles=>res.status(200).json({ok:true, profiles}))
+  	.then(profile=>res.status(200).json({ok:true, profile}))
   	.catch(err=>res.status(500).json({ok:false, err}))
 };
 CTRL.getAll = (req, res) => {
@@ -18,24 +18,35 @@ CTRL.getAll = (req, res) => {
 
 
 CTRL.create = (req, res)=>{
-	const label = req.body.label;
-	Profile.create({
-		label:label,
-		uniqueId:v4()
+	let label;
+	Profile.countDocuments({})
+	.then(count=>{
+		console.log(`number of profiles - ${count}`)
+		label = `Profile #${count+1}`;
+		Profile.create({
+			label:label,
+			uniqueId:v4()
+			})
+			.then((newProfile)=>{
+				res.status(201).json({
+					ok:true, 
+					newProfile
+				})
+			})
+			.catch(err =>{
+				res.status(500).json({
+					Ok:false, 
+					err
+				});
+			})
 	})
-	.then((newProfile)=>{
-		res.status(201).json({
-			ok:true, 
-			id:newProfile.uniqueId
-		})
-	})
-	.catch(err =>{
-		res.status(500).json({
-			Ok:false, 
+	.catch(err=>{
+		res.status(500)
+		.json({
+			ok:false,
 			err
-		});
-	})
-	
+		})
+	});
 };
 
 module.exports = CTRL;

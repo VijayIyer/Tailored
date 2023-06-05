@@ -7,7 +7,18 @@ CTRL.get = (req, res)=>{
 		res.status(200)
 		.json({
 			ok:true, 
-			education
+			education: education.map(education=>
+				{ 
+					return ({
+						id:education._id, 
+						degreeName:education.degreeName, 
+						label:education.label, 
+						institution:education.institution, 
+						startDate:education.startDate, 
+						endDate: education.endDate,
+						major: education.major
+					})
+			})
 		})
 	})
 	.catch(err=>{
