@@ -15,7 +15,7 @@ import { FaSave } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import Field from "../utils/field";
 import "./index.css";
-const Contact = () => {
+const Contact = ({ data }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -42,46 +42,41 @@ const Contact = () => {
       .catch(err=>console.error(err))
     }
   };
-  useEffect(()=>{
-    console.log(locationHook.state.profileId);
-  })
-  useEffect(()=>{
-    console.log(`new contact field has id - ${id}`);
-  }, [id])
+  
   const createContactInfo = async () =>{
-    try{
-      let result;
-      let profileId = locationHook.state.profileId;
-      if(!profileId){
-          result = await fetch('http://localhost:5000/api/v1/contact', {
-            method:'POST',
-            "headers":{
-              "content-type":"application/json"
-            },
-            body:JSON.stringify({
-              "profileId": locationHook.state.profileId
-            })
-          });
-        }
-      else{
-         result = await fetch(`http://localhost:5000/api/v1/contact/${profileId}`, {
-            method:'GET',
-            headers:{
-              "content-type":"application/json"
-            }
-            
-          }); 
-      }
-      let data = await result.json();
-      setId(data.id);
-    }
-    catch(err) {
-      console.error(err);
-      return null;
-    }
+    console.log(`creating new contact`);
+    let result;
+    let profileId = locationHook.state.profileId;
+    result = await fetch('http://localhost:5000/api/v1/contact', {
+          method:'POST',
+          "headers":{
+            "content-type":"application/json"
+          },
+          body:JSON.stringify({
+            "profileId": locationHook.state.profileId
+          })
+        });
+      
+    let data = await result.json();
+    const { _id, name, location, email, phone } = data.newContact;
+    setId(_id);
+    setName(name);
+    setLocation(location);
+    setPhone(phone);
+    setEmail(email); 
   }
   useEffect(()=>{
-    createContactInfo();
+    if(!data) createContactInfo();
+    else{
+      const { _id, name, location, email, phone } = data;
+      console.log(`saved contact details - ${JSON.stringify(data)}`);
+      setId(_id);
+      setName(name);
+      setLocation(location);
+      setPhone(phone);
+      setEmail(email);  
+    }
+    
   }, []);
   return (
     <>
