@@ -15,3 +15,17 @@
 .landingPage__btn:hover{
 	border:3px solid black;
 }
+.landingPage__btn *{
+	vertical-align:middle;
+}
+.profile-listing{
+	display:flex;
+	flex-direction:column;
+	margin:1em;
+	padding:1em;
+	border:1px solid;
+}
+.profile-listing:hover{
+	border:2px solid black;
+	font-weight:bold;
+}
