@@ -1,9 +1,9 @@
 import { Container, Row, Form, Button, FloatingLabel } from "react-bootstrap";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import NewEducation from './newEducation';
 import './index.css';
-const Education = () => {
+const Education = ({ data }) => {
   const location = useLocation();
   const profileId = location.state.profileId;
   const [items, setItems] = useState([]);
@@ -85,6 +85,7 @@ const Education = () => {
     if(newItems.find(item=>item.id===id)){
       newItems.find(item=>item.id===id).major = major;
     }
+    console.log(newItems);
     setItems(newItems);
   };
   const modifyStartDate = (id, startDate)=>{
@@ -103,12 +104,16 @@ const Education = () => {
     }
     setItems(newItems);
   };
+  useEffect(()=>{
+    console.log(`education data - ${JSON.stringify(data)}`);
+    setItems(data);
+  }, [data]);
   return (
     <Container className="text-center">
       <Row><h3>Education</h3></Row>
       {items.map((item, index) =>{
         return (
-          <Row>
+          <Row key={item._id}>
             <NewEducation id={item.id} key={item.id} 
               removeItem={()=>removeItem(item.id)}
               major={item.major}

@@ -22,11 +22,6 @@ export default function NewEducation({
 	modifyEndDate }){
 	const [header, setHeader] = useState(null);
 	const [editMode, setEditMode] = useState(false);
-	// const [institution, setInstitution] = useState(null); 
-  // const [startDate, setStartDate] = useState(null);
-  // const [endDate, setEndDate] = useState(null); 
-  // const [degreeName, setDegreeName] = useState(null);
-  // const [major, setMajor] = useState(null)
 	const saveEducation = ()=>{
 		fetch(`http://localhost:5000/api/v1/education/${id}`, {
 			method:'POST',
