@@ -7,7 +7,12 @@ import { FiEdit2 } from 'react-icons/fi';
 import Field from '../utils/field';
 export default function NewExperience({id, 
 	removeItem, 
-	headerArgument, 
+	label,
+	company,
+	jobTitle,
+	startDate,
+	endDate, 
+	summary,
 	modifyItemLabel, 
 	modifyJobTitle, 
 	modifySummary, 
@@ -16,12 +21,29 @@ export default function NewExperience({id,
 	modifyEndDate }){
 	const [header, setHeader] = useState(null);
 	const [editMode, setEditMode] = useState(false);
-	const [companyName, setCompanyName] = useState(null); 
-  const [jobTitle, setJobTitle] = useState(null);
+	const saveEducation = ()=>{
+		fetch(`http://localhost:5000/api/v1/experience/${id}`, {
+			method:'POST',
+			body:JSON.stringify({
+				companyName, 
+				startDate, 
+				endDate, 
+				summary, 
+				jobTitle,
+				label
+			}),
+			headers:{
+				'content-type':'application/json'
+			}
+		})
+		.then(res=>res.json())
+		.then(data=>console.log(data))
+		.catch(err=>console.error(err))
+	}
 	useEffect(()=>{
-		console.log(headerArgument);
-		setHeader(headerArgument);
-	}, [])
+		console.log(label);
+		setHeader(label);
+	}, [label]);
 	
 	return (
 		<Accordion alwaysOpen>
@@ -107,7 +129,7 @@ export default function NewExperience({id,
 	        	</Row>
 	        	<Row>
 	        		<Col>
-	        			<Button className="flex justify-content-flex-start mt-3" variant="outline-dark">
+	        			<Button onClick={saveExperience} className="flex justify-content-flex-start mt-3" variant="outline-dark">
 	        				<FaSave />
 	        			</Button>
 	        		</Col>
