@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,7 +10,7 @@ import Skills from "./components/skills";
 import Education from "./components/education";
 import Contact from "./components/contact";
 import "./styles.css";
-function App() {
+function CreateProfilePage() {
   const location = useLocation();
   const profileId = location.state.profileId;
   const [experienceReplaced, setExperienceReplaced] = useState(false);
@@ -18,45 +18,78 @@ function App() {
   const [skillReplaced, setSkillReplaced] = useState(false);
   const [educationReplaced, setEducationReplaced] = useState(false);
   const [contactReplaced, setContactReplaced] = useState(false);
+  const [contactData, setContactData] = useState(null);
+  const [educationData, setEducationData] = useState([]);
+  const [skillData, setSkillData] = useState([]);
+  useEffect(() => {
+      fetch(`http://localhost:5000/api/v1/contact/${profileId}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        if(res.ok) return res.json();
+        throw new Error(`Something went wrong getting contact record for ${profileId}`);
+      })
+      .then((data) => {
+        if (data.contact) { 
+          setContactReplaced(true);
+          setContactData(data.contact);
+        }
+      })
+      .catch((err) => console.error(`err:${err}`));
+  }, []);
   useEffect(()=>{
-    fetch('http://localhost:5000/api/v1/contact/:profileId', {
+    fetch(`http://localhost:5000/api/v1/skills/${profileId}`, {
       method:'GET',
       headers:{
         'content-type':'application/json'
       }
     })
-    .then(res=>res.json())
+    .then(res=>{ 
+      if(res.ok) return res.json();
+      throw new Error('error getting skills');
+    })
     .then(data=>{
-      if(data.contact.length > 0) setContactReplaced(true);
+        console.log(`saved skills are  - ${data.skills}`);
+        setSkillReplaced(true);
+        setSkillData(data.skills)
     })
     .catch(err=>console.error(err))
-  }, [])
-  useEffect(()=>{
-    fetch('http://localhost:5000/api/v1/experience/:profileId', {
-      method:'GET',
-      headers:{
-        'content-type':'application/json'
-      }
+  }, []);
+  // useEffect(() => {
+  //   fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.experience.length > 0) setExperienceReplaced(true);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/v1/education/${profileId}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
     })
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.experience.length > 0) setExperienceReplaced(true);
-    })
-    .catch(err=>console.error(err))
-  }, [])
-  useEffect(()=>{
-    fetch('http://localhost:5000/api/v1/education/:profileId', {
-      method:'GET',
-      headers:{
-        'content-type':'application/json'
-      }
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.education.length > 0) setEducationReplaced(true);
-    })
-    .catch(err=>console.error(err))
-  }, [])
+      .then((res) => { 
+        if(res.ok) return res.json();
+        throw new Error(`error retrieving education record for profile ${profileId}`)
+      })
+      .then((data) => {
+        if (data.education.length > 0) { 
+          setEducationReplaced(true);
+          setEducationData(data.education);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
   const replaceSection = (sectionName) => {
     switch (sectionName) {
       case "experience":
@@ -87,13 +120,10 @@ function App() {
         <Row className='justify-content-md-center'>
           <Col md={8} className='border border-dark m-1'>
             <Container fluid>
-              <Row
-                className='section'
-                
-              >
+              <Row className='section'>
                 <Col className='p-1'>
                   {contactReplaced ? (
-                    <Contact />
+                    <Contact data={contactData}/>
                   ) : (
                     <div
                       role='button'
@@ -105,13 +135,10 @@ function App() {
                   )}
                 </Col>
               </Row>
-              <Row
-                className='section'
-                
-              >
+              <Row className='section'>
                 <Col className='p-1 text-center'>
                   {educationReplaced ? (
-                    <Education />
+                    <Education data={educationData} />
                   ) : (
                     <div
                       role='button'
@@ -126,7 +153,7 @@ function App() {
               <Row className='section'>
                 {skillReplaced ? (
                   <Col className='p-1 text-center'>
-                    <Skills />
+                    <Skills data={skillData}/>
                   </Col>
                 ) : (
                   <Col className='p-1'>
@@ -140,10 +167,7 @@ function App() {
                   </Col>
                 )}
               </Row>
-              <Row
-                className='section'
-                
-              >
+              <Row className='section'>
                 {experienceReplaced ? (
                   <Col className='p-1 text-center'>
                     <Experience />
@@ -160,10 +184,7 @@ function App() {
                   </Col>
                 )}
               </Row>
-              <Row
-                className='section'
-                
-              >
+              <Row className='section'>
                 {projectReplaced ? (
                   <Col className='p-1 text-center'>
                     <Project />
@@ -202,4 +223,4 @@ function App() {
   );
 }
 
-export default App;
+export default CreateProfilePage;
