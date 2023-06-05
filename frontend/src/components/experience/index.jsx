@@ -3,7 +3,7 @@ import { Container, Button, Row, FloatingLabel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NewExperience from './newExperience.jsx';
 import './index.css';
-const Experience = () => {
+const Experience = ({ data }) => {
   const [items, setItems] = useState([]);
   const addItem = () =>{
     let newItem = {
@@ -77,7 +77,12 @@ const Experience = () => {
           <Row>
             <NewExperience id={item.id} key={item.id} 
               removeItem={()=>removeItem(item.id)}
-              headerArgument={item.label}
+              label={item.label}
+              companyName={item.companyName}
+              jobTitle={item.jobTitle}
+              summary={item.summary}
+              startDate={item.startDate}
+              endDate={item.endDate}
               modifyItemLabel={modifyItemLabel} 
               modifyCompanyName={modifyCompanyName}
               modifyJobTitle={modifyJobTitle}
