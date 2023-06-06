@@ -3,13 +3,22 @@ const CTRL = {};
 CTRL.get = (req, res)=>{
 	const profileId = req.params.profileId;
 	Experience.find({profileId:profileId})
-	.then(experience=>{
+	.then(experiences=>{
 		res.status(200)
 		.json({
 			ok:true, 
-			experience
+			experiences:experiences.map(experience=>{
+				return (
+					{
+						id:experience._id, 
+						jobTitle, 
+						companyName, 
+						startDate, 
+						endDate, 
+						summary
+					})
+				})
 		})
-
 	})
 	.catch(err=>res.status(500).json({ok:false, err}))
 }
@@ -30,7 +39,15 @@ CTRL.add = async (req, res)=>{
 			res.status(201)
 			.json({
 				ok:true, 
-				createdExperience
+				createdExperience:{
+					id:createdExperience._id, 
+					companyName, 
+					jobTitle, 
+					startDate, 
+					endDate, 
+					summary, 
+					label
+				}
 			})
 		})
 		.catch(err=>{

@@ -7,20 +7,23 @@ import { FiEdit2 } from 'react-icons/fi';
 import Field from '../utils/field';
 export default function NewProject({ 
 	id,
+	label,
+	title, 
+	summary, 
+	startDate, 
+	endDate, 
 	modifyLabel,
 	modifyTitle,
 	modifySummary,
 	modifyStartDate,
  	modifyEndDate, 
-	removeItem,
-	headerArgument
+	removeItem
 	}) {
 	const [header, setHeader] = useState(null);
 	const [editMode, setEditMode] = useState(false);
-	const [title, setTitle] = useState(null);
 	useEffect(()=>{
-		console.log(headerArgument);
-		setHeader(headerArgument);
+		console.log(label);
+		setHeader(label);
 	}, [])
 	
 	return (
@@ -31,7 +34,6 @@ export default function NewProject({
 					{editMode? <Form.Control value={header} onChange={(e)=>setHeader(e.target.value)} /> : 
 					<Form.Text className="m-3">{header}</Form.Text>}
 					<InputGroup.Text onClick={(e)=>{
-						
 						setEditMode(mode=>!mode);
 					}}>
 						{editMode ? <MdDone onClick={()=>modifyLabel(id, header)}/>:<FiEdit2 />}

@@ -1,27 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container, Button, Row, FloatingLabel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NewExperience from './newExperience.jsx';
 import './index.css';
 const Experience = ({ data }) => {
   const [items, setItems] = useState([]);
+  const location = useLocation();
+  const profileId = location.state.profileId;
   const addItem = () =>{
-    let newItem = {
-      id:items.length,
-      label:`Experience # ${items.length}`,
-      companyName:null, 
-      jobTitle:null,
-      startDate:null,
-      endDate:null, 
-      summary:null,
-    }
-    setItems([...items, newItem]);
+    fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
+      method:'POST',
+      body:JSON.stringify({
+        label:`Experience # ${items.length}`,
+        profileId:profileId  
+      }),
+      headers:{
+        'content-type':'application/json'
+      }
+
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      setItems([...items, data.createdExperience]);
+    })
+    .catch(err=>console.error(err))
   }
-   const removeItem = (id) =>{
+  const removeItem = (id) =>{
     let newItems = items.filter(item => item.id !== id);
     setItems(newItems);
   }
-    const modifyItemLabel = (id, label)=>{
+  const modifyItemLabel = (id, label)=>{
     console.log(`field changed:${label}`);
     let newItems = [...items];
     if(newItems.find(item=>item.id===id)){
@@ -69,6 +78,9 @@ const Experience = ({ data }) => {
     }
     setItems(newItems);
   };
+  useEffect(()=>{
+    if(data) setItems(data);
+  }, [data])
   return (
     <Container className="text-center">
       <Row><h3>Experience</h3></Row>

@@ -8,7 +8,7 @@ import Field from '../utils/field';
 export default function NewExperience({id, 
 	removeItem, 
 	label,
-	company,
+	companyName,
 	jobTitle,
 	startDate,
 	endDate, 
@@ -21,16 +21,16 @@ export default function NewExperience({id,
 	modifyEndDate }){
 	const [header, setHeader] = useState(null);
 	const [editMode, setEditMode] = useState(false);
-	const saveEducation = ()=>{
+	const saveExperience = ()=>{
 		fetch(`http://localhost:5000/api/v1/experience/${id}`, {
 			method:'POST',
 			body:JSON.stringify({
+				label, 
 				companyName, 
 				startDate, 
 				endDate, 
-				summary, 
-				jobTitle,
-				label
+				jobTitle, 
+				summary
 			}),
 			headers:{
 				'content-type':'application/json'

@@ -36,7 +36,10 @@ CTRL.create = (req, res)=>{
 		res.status(201)
 		.json({
 			ok:true, 
-			id:newEducation._id
+			createdEducation:{
+				id:newEducation._id, 
+				...newEducation
+			}
 		})
 	})
 	.catch(err=>{

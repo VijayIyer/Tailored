@@ -22,6 +22,7 @@ function CreateProfilePage() {
   const [educationData, setEducationData] = useState([]);
   const [skillData, setSkillData] = useState([]);
   const [experienceData, setExperienceData] = useState([]);
+  const [projectData, setProjectData] = useState([]);
   useEffect(() => {
       fetch(`http://localhost:5000/api/v1/contact/${profileId}`, {
         method: "GET",
@@ -60,25 +61,6 @@ function CreateProfilePage() {
     .catch(err=>console.error(err))
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((res) => {
-        if(res.ok) return res.json();
-        throw new Error(`error retrieving experience records for profile with id ${profileId}`);
-      })
-      .then((data) => {
-         { 
-          setExperienceReplaced(true);
-          setExperienceData(data.experience);
-       }
-      })
-      .catch((err) => console.error(err));
-  }, []);
-  useEffect(() => {
     fetch(`http://localhost:5000/api/v1/education/${profileId}`, {
       method: "GET",
       headers: {
@@ -96,6 +78,46 @@ function CreateProfilePage() {
         }
       })
       .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+    .then((res) => { 
+        if(res.ok) return res.json();
+        throw new Error(`error retrieving experience records for profile ${profileId}`)
+    })
+    .then((data) => {
+        if(data.experiences.length > 0){
+          console.log(`setting experience replaced to true`);
+          setExperienceReplaced(true);
+          setExperienceData(data.experiences);  
+        }
+    })
+    .catch((err) => console.error(err));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/v1/projects/${profileId}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+    .then((res) => { 
+        if(res.ok) return res.json();
+        throw new Error(`error retrieving project records for profile ${profileId}`)
+    })
+    .then((data) => {
+        if(data.projects.length > 0){
+          setProjectReplaced(true);
+          setProjectData(data.projects);  
+        }
+    })
+    .catch((err) => console.error(err));
   }, []);
   const replaceSection = (sectionName) => {
     switch (sectionName) {
@@ -194,7 +216,7 @@ function CreateProfilePage() {
               <Row className='section'>
                 {projectReplaced ? (
                   <Col className='p-1 text-center'>
-                    <Project />
+                    <Project data={projectData} />
                   </Col>
                 ) : (
                   <Col className='p-1'>

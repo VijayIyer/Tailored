@@ -1,20 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container, Button, Row, FloatingLabel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NewProject from './newProject.jsx';
 import './index.css';
-const Project = () => {
+const Project = ({ data }) => {
   const [items, setItems] = useState([]);
+  const location = useLocation();
+  const profileId = location.state.profileId;
   const addItem = () =>{
-    let newItem = {
-      id:items.length, 
-      label:`Project # ${items.length}`,
-      title:null,
-      startDate:null, 
-      endDate:null, 
-      summary:null
-    }
-    setItems([...items, newItem]);
+    fetch(`http://localhost:5000/api/v1/projects/${profileId}`, {
+      method:'POST',
+      body:JSON.stringify({
+        label:`Project # ${items.length}`,
+        profileId:profileId  
+      }),
+      headers:{
+        'content-type':'application/json'
+      }
+
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      setItems([...items, data.createdProject]);
+    })
+    .catch(err=>console.error(err))
   }
   const removeItem = (id) =>{
     let newItems = items.filter(item => item.id !== id);
@@ -60,6 +70,9 @@ const Project = () => {
     }
     setItems(newItems);
   };
+  useEffect(()=>{
+    if (data) setItems(data);
+  }, [data])
   return (
     <Container className="text-center">
       <Row><h3>Projects</h3></Row>
@@ -67,8 +80,12 @@ const Project = () => {
         return (
           <Row>
             <NewProject id={item.id} key={item.id} 
+            label={item.label}
+            title={item.title}
+            summary={item.summary}
+            startDate={item.startDate}
+            endDate={item.endDate}
             removeItem={removeItem} 
-            headerArgument={item.label}
             modifyLabel={modifyLabel}
             modifyTitle={modifyTitle}
             modifySummary={modifySummary}

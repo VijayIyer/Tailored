@@ -15,21 +15,13 @@ const Education = ({ data }) => {
         'content-type':'application/json'
       },
       body:JSON.stringify({
-        profileId:profileId
+        profileId:profileId,
+        label:`Education # ${items.length}`
       })
     })
     .then(res => res.json())
     .then(data => {
-      newItem = {
-        id: data.id,
-        label:`Education # ${items.length}`,
-        institution:null, 
-        major:null,
-        startDate:null,
-        endDate:null, 
-        degreeName:null,
-      };
-      setItems([...items, newItem]);  
+      setItems([...items, data.createdEducation]);  
     })
     .catch(err=>console.error(err))
   }

@@ -7,7 +7,16 @@ CTRL.get = (req, res)=>{
 		res.status(200)
 		.json({
 			ok:true, 
-			projects
+			projects:projects.map(project=>{
+				return ({
+					id:project._id, 
+					title, 
+					summary, 
+					startDate, 
+					endDate, 
+					label
+				})
+			})
 		})
 	})
 	.catch(err=>{

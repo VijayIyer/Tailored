@@ -43,7 +43,7 @@ export default function NewEducation({
 	}
 	useEffect(()=>{
 		setHeader(label);
-	}, [label])
+	}, [label]);
 	return (
 		<Accordion alwaysOpen>
 		<Accordion.Header>
