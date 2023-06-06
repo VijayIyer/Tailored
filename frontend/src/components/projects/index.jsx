@@ -9,7 +9,7 @@ const Project = ({ data }) => {
   const location = useLocation();
   const profileId = location.state.profileId;
   const addItem = () =>{
-    fetch(`http://localhost:5000/api/v1/projects/${profileId}`, {
+    fetch(`http://localhost:5000/api/v1/projects`, {
       method:'POST',
       body:JSON.stringify({
         label:`Project # ${items.length}`,
@@ -20,7 +20,10 @@ const Project = ({ data }) => {
       }
 
     })
-    .then(res=>res.json())
+    .then(res=>{
+        if(res.ok) return res.json();
+        throw new Error('error adding new project item');
+      })
     .then(data=>{
       setItems([...items, data.createdProject]);
     })

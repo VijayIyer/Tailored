@@ -9,7 +9,7 @@ const Experience = ({ data }) => {
   const location = useLocation();
   const profileId = location.state.profileId;
   const addItem = () =>{
-    fetch(`http://localhost:5000/api/v1/experience/${profileId}`, {
+    fetch(`http://localhost:5000/api/v1/experience`, {
       method:'POST',
       body:JSON.stringify({
         label:`Experience # ${items.length}`,
@@ -20,7 +20,10 @@ const Experience = ({ data }) => {
       }
 
     })
-    .then(res=>res.json())
+    .then(res=>{
+      if (res.ok) return res.json();
+      throw new Error('error adding experience');
+    })
     .then(data=>{
       setItems([...items, data.createdExperience]);
     })
