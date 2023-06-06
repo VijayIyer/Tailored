@@ -3,21 +3,23 @@ const CTRL = {};
 CTRL.get = (req, res)=>{
 	const profileId = req.params.profileId;
 	Experience.find({profileId:profileId})
-	.then(experiences=>{
-		res.status(200)
-		.json({
-			ok:true, 
-			experiences:experiences.map(experience=>{
+	.then(savedExperiences=>{
+		let experiences = savedExperiences.map(experience=>{
 				return (
 					{
 						id:experience._id, 
-						jobTitle, 
-						companyName, 
-						startDate, 
-						endDate, 
-						summary
+						jobTitle:experience.jobTitle, 
+						companyName:experience.companyName, 
+						startDate:experience.startDate, 
+						endDate:experience.endDate, 
+						summary:experience.summary
 					})
 				})
+		console.log(JSON.stringify(experiences));
+		return res.status(200)
+		.json({
+			ok:true, 
+			experiences
 		})
 	})
 	.catch(err=>res.status(500).json({ok:false, err}))
@@ -35,8 +37,12 @@ CTRL.add = (req, res)=>{
 				ok:true, 
 				createdExperience:{
 					id:createdExperience._id, 
-					profileId,  
-					label
+					label:createdExperience.label, 
+					jobTitle:createdExperience.jobTitle, 
+					companyName:createdExperience.companyName, 
+					summary:createdExperience.summary, 
+					startDate:createdExperience.startDate,
+					endDate:createdExperience.endDate
 				}
 			})
 		})
@@ -77,8 +83,13 @@ CTRL.update = (req, res)=>{
 		.json({
 			ok:true, 
 			experience: {
-				id:updatedExperience._id,
-				...updatedExperience
+				id:updatedExperience._id, 
+					label:updatedExperience.label, 
+					jobTitle:updatedExperience.jobTitle, 
+					companyName:updatedExperience.companyName, 
+					summary:updatedExperience.summary, 
+					startDate:updatedExperience.startDate,
+					endDate:updatedExperience.endDate
 			}
 		})
 	})

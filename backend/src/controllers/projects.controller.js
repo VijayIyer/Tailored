@@ -10,11 +10,11 @@ CTRL.get = (req, res)=>{
 			projects:projects.map(project=>{
 				return ({
 					id:project._id, 
-					title, 
-					summary, 
-					startDate, 
-					endDate, 
-					label
+					title:project.title, 
+					summary:project.summary, 
+					startDate:project.startDate, 
+					endDate:project.endDate, 
+					label:project.label
 				})
 			})
 		})
@@ -40,8 +40,12 @@ CTRL.add = (req, res)=>{
 			.json({
 				ok:true, 
 				createdProject:{
-					id:createdProject._id,
-					...createdProject
+					id:createdProject._id, 
+					title:createdProject.title, 
+					summary:createdProject.summary, 
+					startDate:createdProject.startDate, 
+					endDate:createdProject.endDate, 
+					label:createdProject.label
 				}
 			})
 		})
@@ -76,13 +80,17 @@ CTRL.update = (req, res)=>{
 		project.save();
 		return project;
 	})
-	.then(project=>{
+	.then(updatedProject=>{
 		res.status(200)
 		.json({
 			ok:true, 
 			project: {
-				id:project._id,
-				...project
+				id:updatedProject._id, 
+				title:updatedProject.title, 
+				summary:updatedProject.summary, 
+				startDate:updatedProject.startDate, 
+				endDate:updatedProject.endDate, 
+				label:updatedProject.label
 			}
 		})
 	})
