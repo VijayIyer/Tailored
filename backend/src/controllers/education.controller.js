@@ -31,14 +31,14 @@ CTRL.get = (req, res)=>{
 }
 
 CTRL.add = (req, res)=>{
-	Education.create({profileId:req.body.profileId})
+	Education.create({label:req.body.label, profileId:req.body.profileId})
 	.then(newEducation=>{
 		res.status(201)
 		.json({
 			ok:true, 
 			createdEducation:{
 				id:newEducation._id, 
-				...newEducation
+				label:newEducation.label,
 			}
 		})
 	})

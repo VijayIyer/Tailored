@@ -70,6 +70,7 @@ CTRL.add = (req, res)=>{
 CTRL.update = (req, res)=>{
 	const id = req.params.id;
 	const { title, label, startDate, endDate, summary} = req.body;
+	console.log(JSON.stringify(req.body));
 	Projects.findById(id)
 	.then(project=>{
 		project.title = title;

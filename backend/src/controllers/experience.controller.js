@@ -8,6 +8,7 @@ CTRL.get = (req, res)=>{
 				return (
 					{
 						id:experience._id, 
+						label:experience.label,
 						jobTitle:experience.jobTitle, 
 						companyName:experience.companyName, 
 						startDate:experience.startDate, 
