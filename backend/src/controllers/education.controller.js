@@ -30,7 +30,7 @@ CTRL.get = (req, res)=>{
 	})
 }
 
-CTRL.create = (req, res)=>{
+CTRL.add = (req, res)=>{
 	Education.create({profileId:req.body.profileId})
 	.then(newEducation=>{
 		res.status(201)

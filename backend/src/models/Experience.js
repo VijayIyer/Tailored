@@ -6,6 +6,9 @@ const ExperienceSchema = new Schema({
 	companyName:{
 		type:String
 	}, 
+	label:{
+		type:String
+	}, 
 	jobTitle:{
 		type:String
 	}, 

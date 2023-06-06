@@ -28,14 +28,10 @@ CTRL.get = (req, res)=>{
 	})
 };
 CTRL.add = (req, res)=>{
-	const profileId = req.params.profileId;
+	
 	try{
-		const { title, summary, startDate, endDate, label} = req.body;
+		const { label, profileId } = req.body;
 		Projects.create({
-			title, 
-			startDate, 
-			endDate, 
-			summary,
 			label,
 			profileId
 		})
@@ -43,10 +39,14 @@ CTRL.add = (req, res)=>{
 			res.status(201)
 			.json({
 				ok:true, 
-				createdProject
+				createdProject:{
+					id:createdProject._id,
+					...createdProject
+				}
 			})
 		})
 		.catch(err=>{
+			console.log(err);
 			res.status(500)
 			.json({
 				ok:false,
@@ -55,11 +55,60 @@ CTRL.add = (req, res)=>{
 		})
 	}
 	catch(err){
+		console.log(err);
 		res.status(500)
 		.json({
 			ok:false, 
 			err
 		})
 	}
+}
+CTRL.update = (req, res)=>{
+	const id = req.params.id;
+	const { title, label, startDate, endDate, summary} = req.body;
+	Projects.findById(id)
+	.then(project=>{
+		project.title = title;
+		project.label = label;
+		project.startDate = startDate;
+		project.endDate = endDate;
+		project.summary = summary;
+		project.save();
+		return project;
+	})
+	.then(project=>{
+		res.status(200)
+		.json({
+			ok:true, 
+			project: {
+				id:project._id,
+				...project
+			}
+		})
+	})
+	.catch(err=>{
+		res.status(500)
+		.json({
+			ok:false, 
+			err
+		})
+	})
+}
+CTRL.delete = (req, res)=>{
+	const id = req.params.id;
+	Projects.findByIdAndDelete({_id:id})
+	.then(()=>{
+		res.status(200)
+		.json({
+			ok:true
+		})
+	})
+	.catch(err=>{
+		res.status(500)
+		.json({
+			ok:false,
+			err
+		})
+	})
 }
 module.exports = CTRL;
